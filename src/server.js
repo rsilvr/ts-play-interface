@@ -1,3 +1,4 @@
+// https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=BRL,USD,EUR
 var express = require('express')
 var app = express()
 
