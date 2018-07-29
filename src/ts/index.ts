@@ -38,13 +38,26 @@ interface PricingData {
   eur: number
 }
 
+interface PricingDataHandler {
+  (data: PricingData): void
+}
+
 import axios from 'axios'
 
-axios.get('http://localhost:3000/')
-.then(res => res.data)
-.then((data: PricingData) => {
-  console.log('BTC prices received')
-  console.log(`BRL: ${data.brl}`)
-  console.log(`USD: ${data.usd}`)
-  console.log(`EUR: ${data.eur}`)
+function getBTCPrices(handler?: PricingDataHandler) {
+  const call = axios.get('http://localhost:3000/').then(res => res.data)
+  if(!handler) {
+    handler = (data: PricingData) => {
+      console.log('BTC prices received')
+      console.log(`BRL: ${data.brl}`)
+      console.log(`USD: ${data.usd}`)
+      console.log(`EUR: ${data.eur}`)
+    }
+  }
+  return call.then(handler)
+}
+
+getBTCPrices()
+getBTCPrices(data => {
+  console.log(`BTC is US${data.usd} today`)
 })
